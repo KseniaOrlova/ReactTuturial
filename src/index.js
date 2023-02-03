@@ -19,31 +19,24 @@ class Board extends React.Component {
     return (
 		<Square 
 			value={this.props.squares[i]}
+			key = {i}
 			onClick={()=> this.props.onClick(i)}
 		/> //передавать текущее состояние
 	)
   }
 
   render() {
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
+	const rows = 3;
+	const cells = 3;
+	return (
+		<div>
+			{[...Array(rows).keys()].map(row => (
+				<div className="board-row" key={row}>
+					{[...Array(cells).keys()].map(cell => this.renderSquare(row * cells + cell))}
+				</div>
+			))}
+		</div>
+	)
   }
 }
 
@@ -95,7 +88,7 @@ class Game extends React.Component {
 	  const winner = calculateWinner(current.squares);
 	  
 	  const moves = history.map((step, move) => {
-		  const desc = move ? 'Перейти к ходу ' + move :
+		  const desc = move ? 'Перейти к ходу ' + move:
 		  'К началу игры';
 		  return (
 			  <li key={move}>
