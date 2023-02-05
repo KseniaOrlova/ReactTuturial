@@ -31,9 +31,12 @@ ol, ul {
   text-align: center;
   width: 34px;
 }
+.bisque {
+    background: bisque;
+}
 
 .square:focus {
-  outline: none;
+    outline: none;
 }
 
 .kbd-navigation .square:focus {

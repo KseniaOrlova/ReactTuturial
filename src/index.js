@@ -45,9 +45,9 @@ class Game extends React.Component {
 		super(props);
 		this.state={
 			history: [{
-			squares: Array(9).fill(null),  //  изначально доска (род. компонент) состоит из 9 квадратов, заполненных null
-			row: 0,
-			col: 0,
+				squares: Array(9).fill(null),  //  изначально доска (род. компонент) состоит из 9 квадратов, заполненных null
+				row: 0,
+				col: 0,
 			}],
 			stepNumber: 0,
 			xIsNext: true,
@@ -99,8 +99,16 @@ class Game extends React.Component {
 		  const desc = move ? 'Перейти к ходу #' + move + " " + step.col + " : " + step.row:
 		  'К началу игры';
 		  return (
-			  <li key={move}>
-				  <button onClick={() => this.jumpTo(move)}>{desc}</button>
+			  <li key={move} id={move}>
+				  <button onClick={() => {
+					  this.jumpTo(move);
+					  const elements = document.getElementsByClassName("bisque");
+					  for (let i = 0; i < elements.length; i++) {
+						  elements[i].classList.remove("bisque");
+					  }
+					  const el = document.getElementById(move).children[0];
+					  el.classList.add("bisque");
+				  }}>{desc}</button>
 			  </li>
 		  );
 	  });
