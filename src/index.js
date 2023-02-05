@@ -46,6 +46,8 @@ class Game extends React.Component {
 		this.state={
 			history: [{
 			squares: Array(9).fill(null),  //  изначально доска (род. компонент) состоит из 9 квадратов, заполненных null
+			row: 0,
+			col: 0,
 			}],
 			stepNumber: 0,
 			xIsNext: true,
@@ -68,11 +70,16 @@ class Game extends React.Component {
 		this.setState({
 			history: history.concat([{
 				squares: squares,
+				row: (i < 3) ? 1 : (i >= 3 && i < 6) ? 2 : 3,
+				col: (i == 0 || i == 3 || i == 6) ? 1 : (i == 1 || i == 4 || i == 7) ? 2 : 3,
 			}]),
 			stepNumber: history.length,
 			xIsNext: !this.state.xIsNext,
 			isEnd: !squares.includes(null),
+			
 		});
+		console.log(this.state.history);
+
 	}
 	
 	jumpTo(step){
@@ -88,11 +95,12 @@ class Game extends React.Component {
 	  const winner = calculateWinner(current.squares);
 	  
 	  const moves = history.map((step, move) => {
-		  const desc = move ? 'Перейти к ходу ' + move:
+		  
+		  const desc = move ? 'Перейти к ходу #' + move + " " + step.col + " : " + step.row:
 		  'К началу игры';
 		  return (
 			  <li key={move}>
-				<button onClick={() => this.jumpTo(move)}>{desc}</button>
+				  <button onClick={() => this.jumpTo(move)}>{desc}</button>
 			  </li>
 		  );
 	  });
@@ -103,12 +111,12 @@ class Game extends React.Component {
 	  }
 	  else{
 		  if (!this.state.isEnd)
-			  {
+			{
 				status = 'Следующий ход: ' + (this.state.xIsNext ? 'X' : 'O');
-			  }
-			  else{
-				 status = 'Ничья'; 
-			  }
+			}
+			else{
+				status = 'Ничья'; 
+			}
 	  }
 	  
     return (
@@ -152,3 +160,4 @@ function calculateWinner(squares) {
   }
   return null;
 }
+
