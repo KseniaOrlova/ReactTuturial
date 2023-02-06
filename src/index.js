@@ -25,7 +25,7 @@ class Board extends React.Component {
 			onClick={()=> this.props.onClick(i)}
 		/> //передавать текущее состояние
 	)
-  }
+	}
 
   render() {
 	const rows = 3;
@@ -54,9 +54,10 @@ class Game extends React.Component {
 			stepNumber: 0,
 			xIsNext: true,
 			isEnd: false,
+			changedOrder: false,
 		};
 	}
-	
+
 	handleClick(i){
 		const history = this.state.history.slice(0, this.state.stepNumber+1);
 		const current = history[history.length -1];
@@ -84,6 +85,12 @@ class Game extends React.Component {
 			
 		});
 	}
+
+	changeOrder() {
+		this.setState({
+			changedOrder: !this.state.changedOrder,
+		});
+	}
 	
 	jumpTo(step, winner) {
 		if (winner) {
@@ -106,6 +113,7 @@ class Game extends React.Component {
 		el.classList.add("bisque");
 		
 	}
+
   render() {
 	  const history = this.state.history;
 	  const current = history[this.state.stepNumber];
@@ -118,7 +126,7 @@ class Game extends React.Component {
 			}
 		}
 	  
-	  const moves = history.map((step, move) => {
+	  let moves = history.map((step, move) => {
 		  
 		  const desc = move ? 'Перейти к ходу #' + move + " " + step.col + " : " + step.row:
 		  'К началу игры';
@@ -130,6 +138,10 @@ class Game extends React.Component {
 			  </li>
 		  );
 	  });
+
+	  if (this.state.changedOrder) {
+		  moves.reverse() ;
+	  }
 	  
 	  let status;
 	  if(winner){
@@ -154,9 +166,14 @@ class Game extends React.Component {
 		  />
         </div>
         <div className="game-info">
-          <div>{status}</div>
-          <ol>{moves}</ol>
-        </div>
+				<div>{status}</div>
+				<ol>{ moves }</ol>
+		</div>
+			<div className="game-info">
+				<button onClick={() => this.changeOrder()}>
+				Измени порядок
+			</button>
+		</div>
       </div>
     );
   }
